@@ -12,17 +12,18 @@ import Slide07Dashboard from "./slides/Slide07Dashboard";
 import Slide08Tiers from "./slides/Slide08Tiers";
 import Slide09Marketing from "./slides/Slide09Marketing";
 import Slide10CTA from "./slides/Slide10CTA";
+import Slide11Bono from "./slides/Slide11Bono";
 
 const slides = [
   Slide01Cover, Slide02Problem, Slide03Commission, Slide04Offline,
   Slide05ArifPay, Slide06Promoter, Slide07Dashboard, Slide08Tiers,
-  Slide09Marketing, Slide10CTA,
+  Slide09Marketing, Slide11Bono, Slide10CTA,
 ];
 
 const slideLabels = [
   "Cover", "Problem", "Platform", "Offline Mode",
   "ArifPay", "Promoter Engine", "Dashboard", "Tiers",
-  "Marketing", "Call to Action",
+  "Marketing", "Bono", "Call to Action",
 ];
 
 const PitchDeck = () => {
