@@ -9,6 +9,15 @@ const stats = [
   { icon: Database, label: "Data Ownership", value: "100%", sub: "your customer list" },
 ];
 
+const adminFeatures = [
+  "Event Details & Settings",
+  "Ticket Types & Pricing",
+  "Guest Lists & Attendee Data",
+  "Merchandise Management",
+  "Sales Tracking & Reports",
+  "Promoter Analytics",
+];
+
 const Slide07Dashboard = () => (
   <SlideLayout>
     <div className="flex flex-col h-full px-[140px] py-[100px]">
@@ -40,17 +49,21 @@ const Slide07Dashboard = () => (
         ))}
       </div>
 
-      {/* Mock dashboard */}
+      {/* Mock dashboard with admin panel */}
       <motion.div className="flex-1 rounded-3xl border border-tixy-card-border bg-tixy-card overflow-hidden flex"
         initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.8, duration: 0.5 }}>
-        {/* Sidebar */}
-        <div className="w-[220px] border-r border-tixy-card-border p-6 flex flex-col gap-3">
-          {["Overview", "Sales", "Attendees", "Promoters", "Settings"].map((item, i) => (
-            <div key={i} className={`h-10 rounded-lg flex items-center px-4 text-[15px] ${i === 0 ? "bg-gradient-tixy font-semibold" : "text-muted-foreground hover:bg-secondary"}`}
-              style={i === 0 ? { color: "white" } : {}}>
+        {/* Sidebar - Admin Features */}
+        <div className="w-[260px] border-r border-tixy-card-border p-6 flex flex-col gap-2">
+          <p className="text-[13px] text-muted-foreground font-display uppercase tracking-widest mb-3">Admin Panel</p>
+          {adminFeatures.map((item, i) => (
+            <motion.div key={i}
+              className={`h-10 rounded-lg flex items-center px-4 text-[14px] ${i === 0 ? "bg-gradient-tixy font-semibold" : "text-muted-foreground hover:bg-secondary"}`}
+              style={i === 0 ? { color: "white" } : {}}
+              initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.9 + i * 0.05 }}>
               {item}
-            </div>
+            </motion.div>
           ))}
         </div>
         {/* Chart area */}
