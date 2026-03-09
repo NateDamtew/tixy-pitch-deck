@@ -20,7 +20,7 @@ const slides = [
 ];
 
 const slideLabels = [
-  "Cover", "Problem", "5% Advantage", "Offline Mode",
+  "Cover", "Problem", "Platform", "Offline Mode",
   "ArifPay", "Promoter Engine", "Dashboard", "Tiers",
   "Marketing", "Call to Action",
 ];

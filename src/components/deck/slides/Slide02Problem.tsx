@@ -3,10 +3,10 @@ import { AlertTriangle, Wifi, ClipboardList, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 
 const painPoints = [
-  { icon: AlertTriangle, title: "15–20% Commissions", desc: "Legacy platforms eat your profits before you see them." },
+  { icon: AlertTriangle, title: "No Branded Experience", desc: "Generic ticketing pages that dilute your brand. No control over the customer journey." },
   { icon: Wifi, title: "Internet Failures at the Door", desc: "One dropped signal = chaos at check-in. Lost revenue, angry fans." },
-  { icon: ClipboardList, title: "Manual Promoter Tracking", desc: "Spreadsheets, DMs, and guesswork. No visibility into who's actually selling." },
-  { icon: Clock, title: "Delayed Payouts", desc: "Waiting days or weeks to access your own money after the event." },
+  { icon: ClipboardList, title: "Fragmented Tools", desc: "Juggling spreadsheets, separate payment apps, and manual promoter tracking across multiple platforms." },
+  { icon: Clock, title: "High Commissions & Delayed Payouts", desc: "15–20% commissions eating your profits, then waiting days to access your own money." },
 ];
 
 const Slide02Problem = () => (
