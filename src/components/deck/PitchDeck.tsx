@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Maximize2, Grid3X3 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Maximize2, Grid3X3, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ScaledSlide from "./ScaledSlide";
 import Slide01Cover from "./slides/Slide01Cover";
@@ -40,6 +40,7 @@ const PitchDeck = () => {
   const [current, setCurrent] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showGrid, setShowGrid] = useState(false);
+  const [isPrintMode, setIsPrintMode] = useState(false);
 
   const next = useCallback(() => setCurrent(c => Math.min(c + 1, slides.length - 1)), []);
   const prev = useCallback(() => setCurrent(c => Math.max(c - 1, 0)), []);
@@ -67,7 +68,29 @@ const PitchDeck = () => {
     document.documentElement.requestFullscreen?.();
   };
 
+  const handleDownloadPDF = useCallback(() => {
+    setIsPrintMode(true);
+    setTimeout(() => {
+      window.print();
+      setIsPrintMode(false);
+    }, 500);
+  }, []);
+
   const CurrentSlide = slides[current];
+
+  if (isPrintMode) {
+    return (
+      <div className="print-deck">
+        {slides.map((Slide, i) => (
+          <div key={i} className="print-slide">
+            <div className="print-slide-inner">
+              <Slide />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   if (showGrid) {
     return (
@@ -110,11 +133,18 @@ const PitchDeck = () => {
           </div>
           <div className="flex items-center gap-2">
             <button onClick={() => setShowGrid(true)}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground">
+              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+              title="Grid view (G)">
               <Grid3X3 className="w-4 h-4" />
             </button>
+            <button onClick={handleDownloadPDF}
+              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+              title="Download as PDF">
+              <Download className="w-4 h-4" />
+            </button>
             <button onClick={enterFullscreen}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground">
+              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+              title="Fullscreen">
               <Maximize2 className="w-4 h-4" />
             </button>
           </div>

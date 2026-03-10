@@ -12,7 +12,6 @@ const steps = [
 const Slide10CTA = () => (
   <SlideLayout>
     <div className="flex flex-col items-center justify-center h-full px-[200px] text-center">
-      {/* Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-tixy opacity-[0.06] blur-[120px]" />
 
       <motion.img src={tixyLogo} alt="Tixy" className="w-[200px] mb-10"
@@ -44,16 +43,21 @@ const Slide10CTA = () => (
         ))}
       </div>
 
-      <motion.div className="px-16 py-6 rounded-full bg-gradient-tixy text-[28px] font-display font-bold tracking-wide cursor-pointer hover:scale-105 transition-transform"
+      <motion.a
+        href="https://tixy.events"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="px-16 py-6 rounded-full bg-gradient-tixy text-[28px] font-display font-bold tracking-wide cursor-pointer hover:scale-105 transition-transform inline-block no-underline"
         style={{ color: "white" }}
         initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1, duration: 0.5 }}>
-        Start Your Free Event →
-      </motion.div>
+        Visit tixy.events →
+      </motion.a>
 
       <motion.p className="mt-8 text-[18px] text-muted-foreground"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }}>
-        Questions? Reach us at <span className="text-tixy-cyan">hello@tixy.et</span>
+        Questions? Reach us at{" "}
+        <a href="mailto:hello@tixy.et" className="text-tixy-cyan hover:underline">hello@tixy.et</a>
       </motion.p>
     </div>
   </SlideLayout>
