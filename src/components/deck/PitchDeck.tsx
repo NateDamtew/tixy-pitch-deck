@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Maximize2, Grid3X3 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Maximize2, Grid3X3, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ScaledSlide from "./ScaledSlide";
 import Slide01Cover from "./slides/Slide01Cover";
