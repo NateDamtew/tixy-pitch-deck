@@ -1,6 +1,8 @@
-import { useState, useCallback, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Maximize2, Grid3X3, Download } from "lucide-react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { ChevronLeft, ChevronRight, Maximize2, Grid3X3, Download, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 import ScaledSlide from "./ScaledSlide";
 import Slide01Cover from "./slides/Slide01Cover";
 import Slide02Problem from "./slides/Slide02Problem";
@@ -41,6 +43,8 @@ const PitchDeck = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showGrid, setShowGrid] = useState(false);
   const [isPrintMode, setIsPrintMode] = useState(false);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const printRef = useRef<HTMLDivElement>(null);
 
   const next = useCallback(() => setCurrent(c => Math.min(c + 1, slides.length - 1)), []);
   const prev = useCallback(() => setCurrent(c => Math.max(c - 1, 0)), []);
@@ -68,61 +72,93 @@ const PitchDeck = () => {
     document.documentElement.requestFullscreen?.();
   };
 
-  const handleDownloadPDF = useCallback(() => {
+  const handleDownloadPDF = useCallback(async () => {
+    setIsGeneratingPDF(true);
     setIsPrintMode(true);
-    setTimeout(() => {
-      window.print();
+
+    // Wait for slides to render
+    await new Promise(r => setTimeout(r, 800));
+
+    try {
+      const container = printRef.current;
+      if (!container) return;
+
+      const slideEls = container.querySelectorAll<HTMLElement>(".print-slide-inner");
+      const pdf = new jsPDF({ orientation: "landscape", unit: "px", format: [1920, 1080] });
+
+      for (let i = 0; i < slideEls.length; i++) {
+        const canvas = await html2canvas(slideEls[i], {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          backgroundColor: null,
+          width: 1920,
+          height: 1080,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        if (i > 0) pdf.addPage([1920, 1080], "landscape");
+        pdf.addImage(imgData, "PNG", 0, 0, 1920, 1080);
+      }
+
+      pdf.save("Tixy-Pitch-Deck.pdf");
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+    } finally {
       setIsPrintMode(false);
-    }, 500);
+      setIsGeneratingPDF(false);
+    }
   }, []);
 
   const CurrentSlide = slides[current];
 
-  if (isPrintMode) {
-    return (
-      <div className="print-deck">
-        {slides.map((Slide, i) => (
-          <div key={i} className="print-slide">
-            <div className="print-slide-inner">
-              <Slide />
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
+  // Offscreen print container rendered alongside normal UI
+  const printContainer = isPrintMode ? (
+    <div ref={printRef} style={{ position: "absolute", left: "-9999px", top: 0, zIndex: -1 }}>
+      {slides.map((Slide, i) => (
+        <div key={i} className="print-slide-inner" style={{ width: 1920, height: 1080, position: "relative", overflow: "hidden", background: "hsl(220 20% 7%)" }}>
+          <Slide />
+        </div>
+      ))}
+    </div>
+  ) : null;
 
   if (showGrid) {
     return (
-      <div className="min-h-screen bg-background p-8">
-        <div className="flex items-center justify-between mb-8 px-4">
-          <h2 className="text-2xl font-display font-bold text-foreground">All Slides</h2>
-          <button onClick={() => setShowGrid(false)}
-            className="px-4 py-2 rounded-lg bg-secondary text-foreground text-sm font-display hover:bg-tixy-card transition-colors">
-            ← Back to Presentation
-          </button>
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4">
-          {slides.map((Slide, i) => (
-            <button key={i} onClick={() => { setCurrent(i); setShowGrid(false); }}
-              className={`group relative rounded-xl overflow-hidden border-2 transition-all hover:scale-[1.02] ${i === current ? "border-tixy-blue glow-tixy" : "border-tixy-card-border hover:border-muted-foreground"}`}>
-              <div className="aspect-video">
-                <ScaledSlide><Slide /></ScaledSlide>
-              </div>
-              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-background/90 to-transparent p-3">
-                <p className="text-xs font-display text-muted-foreground">
-                  <span className="text-tixy-cyan font-bold">{i + 1}</span> · {slideLabels[i]}
-                </p>
-              </div>
+      <>
+        {printContainer}
+        <div className="min-h-screen bg-background p-8">
+          <div className="flex items-center justify-between mb-8 px-4">
+            <h2 className="text-2xl font-display font-bold text-foreground">All Slides</h2>
+            <button onClick={() => setShowGrid(false)}
+              className="px-4 py-2 rounded-lg bg-secondary text-foreground text-sm font-display hover:bg-tixy-card transition-colors">
+              ← Back to Presentation
             </button>
-          ))}
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4">
+            {slides.map((Slide, i) => (
+              <button key={i} onClick={() => { setCurrent(i); setShowGrid(false); }}
+                className={`group relative rounded-xl overflow-hidden border-2 transition-all hover:scale-[1.02] ${i === current ? "border-tixy-blue glow-tixy" : "border-tixy-card-border hover:border-muted-foreground"}`}>
+                <div className="aspect-video">
+                  <ScaledSlide><Slide /></ScaledSlide>
+                </div>
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-background/90 to-transparent p-3">
+                  <p className="text-xs font-display text-muted-foreground">
+                    <span className="text-tixy-cyan font-bold">{i + 1}</span> · {slideLabels[i]}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="h-screen flex flex-col bg-background overflow-hidden">
+    <>
+      {printContainer}
+      <div className="h-screen flex flex-col bg-background overflow-hidden">
       {/* Toolbar */}
       {!isFullscreen && (
         <div className="h-14 border-b border-border flex items-center justify-between px-6 shrink-0">
@@ -137,10 +173,10 @@ const PitchDeck = () => {
               title="Grid view (G)">
               <Grid3X3 className="w-4 h-4" />
             </button>
-            <button onClick={handleDownloadPDF}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+            <button onClick={handleDownloadPDF} disabled={isGeneratingPDF}
+              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground disabled:opacity-50"
               title="Download as PDF">
-              <Download className="w-4 h-4" />
+              {isGeneratingPDF ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
             </button>
             <button onClick={enterFullscreen}
               className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
@@ -190,7 +226,8 @@ const PitchDeck = () => {
           </button>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 
