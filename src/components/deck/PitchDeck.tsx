@@ -43,6 +43,8 @@ const PitchDeck = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showGrid, setShowGrid] = useState(false);
   const [isPrintMode, setIsPrintMode] = useState(false);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const printRef = useRef<HTMLDivElement>(null);
 
   const next = useCallback(() => setCurrent(c => Math.min(c + 1, slides.length - 1)), []);
   const prev = useCallback(() => setCurrent(c => Math.max(c - 1, 0)), []);
