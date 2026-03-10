@@ -112,17 +112,16 @@ const PitchDeck = () => {
 
   const CurrentSlide = slides[current];
 
-  if (isPrintMode) {
-    return (
-      <div ref={printRef} className="print-deck" style={{ position: "absolute", left: "-9999px", top: 0 }}>
-        {slides.map((Slide, i) => (
-          <div key={i} className="print-slide-inner" style={{ width: 1920, height: 1080, position: "relative", overflow: "hidden" }}>
-            <Slide />
-          </div>
-        ))}
-      </div>
-    );
-  }
+  // Offscreen print container rendered alongside normal UI
+  const printContainer = isPrintMode ? (
+    <div ref={printRef} style={{ position: "absolute", left: "-9999px", top: 0, zIndex: -1 }}>
+      {slides.map((Slide, i) => (
+        <div key={i} className="print-slide-inner" style={{ width: 1920, height: 1080, position: "relative", overflow: "hidden", background: "hsl(220 20% 7%)" }}>
+          <Slide />
+        </div>
+      ))}
+    </div>
+  ) : null;
 
   if (showGrid) {
     return (
