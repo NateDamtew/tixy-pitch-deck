@@ -156,7 +156,9 @@ const PitchDeck = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-background overflow-hidden">
+    <>
+      {printContainer}
+      <div className="h-screen flex flex-col bg-background overflow-hidden">
       {/* Toolbar */}
       {!isFullscreen && (
         <div className="h-14 border-b border-border flex items-center justify-between px-6 shrink-0">
