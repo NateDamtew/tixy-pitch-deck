@@ -13,17 +13,27 @@ import Slide08Tiers from "./slides/Slide08Tiers";
 import Slide09Marketing from "./slides/Slide09Marketing";
 import Slide10CTA from "./slides/Slide10CTA";
 import Slide11Bono from "./slides/Slide11Bono";
+import Slide12WhyTixy from "./slides/Slide12WhyTixy";
 
 const slides = [
-  Slide01Cover, Slide02Problem, Slide03Commission, Slide04Offline,
-  Slide05ArifPay, Slide06Promoter, Slide07Dashboard, Slide08Tiers,
-  Slide09Marketing, Slide11Bono, Slide10CTA,
+  Slide01Cover,        // 1. Hook
+  Slide02Problem,      // 2. Pain points
+  Slide03Commission,   // 3. The Solution — Platform overview
+  Slide07Dashboard,    // 4. Show the product — visual proof
+  Slide11Bono,         // 5. Cashless wow factor
+  Slide04Offline,      // 6. Reliability
+  Slide05ArifPay,      // 7. Local payments
+  Slide06Promoter,     // 8. Growth engine
+  Slide08Tiers,        // 9. Scalable partnerships
+  Slide09Marketing,    // 10. Bonus value — help them sell
+  Slide12WhyTixy,      // 11. Summary — why Tixy
+  Slide10CTA,          // 12. Call to action
 ];
 
 const slideLabels = [
-  "Cover", "Problem", "Platform", "Offline Mode",
-  "ArifPay", "Promoter Engine", "Dashboard", "Tiers",
-  "Marketing", "Bono", "Call to Action",
+  "Cover", "The Problem", "The Platform", "Mission Control",
+  "Bono", "Offline Mode", "ArifPay", "Promoter Engine",
+  "Tiers", "Marketing", "Why Tixy", "Get Started",
 ];
 
 const PitchDeck = () => {
