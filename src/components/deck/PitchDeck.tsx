@@ -78,6 +78,20 @@ const PitchDeck = () => {
 
   const CurrentSlide = slides[current];
 
+  if (isPrintMode) {
+    return (
+      <div className="print-deck">
+        {slides.map((Slide, i) => (
+          <div key={i} className="print-slide">
+            <div className="print-slide-inner">
+              <Slide />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   if (showGrid) {
     return (
       <div className="min-h-screen bg-background p-8">
