@@ -226,7 +226,8 @@ const PitchDeck = () => {
           </button>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 
