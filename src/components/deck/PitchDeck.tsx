@@ -114,12 +114,10 @@ const PitchDeck = () => {
 
   if (isPrintMode) {
     return (
-      <div className="print-deck">
+      <div ref={printRef} className="print-deck" style={{ position: "absolute", left: "-9999px", top: 0 }}>
         {slides.map((Slide, i) => (
-          <div key={i} className="print-slide">
-            <div className="print-slide-inner">
-              <Slide />
-            </div>
+          <div key={i} className="print-slide-inner" style={{ width: 1920, height: 1080, position: "relative", overflow: "hidden" }}>
+            <Slide />
           </div>
         ))}
       </div>
