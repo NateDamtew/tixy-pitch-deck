@@ -57,7 +57,7 @@ const Slide10CTA = () => (
       <motion.p className="mt-8 text-[18px] text-muted-foreground"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }}>
         Questions? Reach us at{" "}
-        <a href="mailto:hello@tixy.et" className="text-tixy-cyan hover:underline">hello@tixy.et</a>
+        <a href="mailto:hello@tixy.events" className="text-tixy-cyan hover:underline">hello@tixy.events</a>
       </motion.p>
     </div>
   </SlideLayout>
