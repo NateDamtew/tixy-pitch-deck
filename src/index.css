@@ -106,3 +106,41 @@
     transform-origin: center center;
   }
 }
+
+/* Print styles for PDF export */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-deck,
+  .print-deck * {
+    visibility: visible !important;
+  }
+  .print-deck {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  .print-slide {
+    width: 100vw;
+    height: 100vh;
+    page-break-after: always;
+    overflow: hidden;
+    position: relative;
+    background: hsl(220 20% 7%);
+  }
+  .print-slide:last-child {
+    page-break-after: auto;
+  }
+  .print-slide-inner {
+    width: 1920px;
+    height: 1080px;
+    transform: scale(0.52);
+    transform-origin: top left;
+  }
+  @page {
+    size: landscape;
+    margin: 0;
+  }
+}
