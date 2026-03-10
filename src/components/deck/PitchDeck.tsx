@@ -68,21 +68,13 @@ const PitchDeck = () => {
     document.documentElement.requestFullscreen?.();
   };
 
-  const handleDownloadPDF = () => {
-    const savedCurrent = current;
-    // Open a new window with all slides rendered for print
-    const printWindow = window.open("", "_blank");
-    if (!printWindow) return;
-
-    const slideElements = slides.map((_, i) => {
-      setCurrent(i);
-      return "";
-    });
-    setCurrent(savedCurrent);
-
-    // Use print dialog which allows saving as PDF
-    window.print();
-  };
+  const handleDownloadPDF = useCallback(() => {
+    setIsPrintMode(true);
+    setTimeout(() => {
+      window.print();
+      setIsPrintMode(false);
+    }, 500);
+  }, []);
 
   const CurrentSlide = slides[current];
 
