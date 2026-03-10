@@ -1,6 +1,8 @@
-import { useState, useCallback, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Maximize2, Grid3X3, Download } from "lucide-react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { ChevronLeft, ChevronRight, Maximize2, Grid3X3, Download, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 import ScaledSlide from "./ScaledSlide";
 import Slide01Cover from "./slides/Slide01Cover";
 import Slide02Problem from "./slides/Slide02Problem";
