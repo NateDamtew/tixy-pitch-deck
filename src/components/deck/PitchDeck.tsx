@@ -110,11 +110,18 @@ const PitchDeck = () => {
           </div>
           <div className="flex items-center gap-2">
             <button onClick={() => setShowGrid(true)}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground">
+              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+              title="Grid view (G)">
               <Grid3X3 className="w-4 h-4" />
             </button>
+            <button onClick={handleDownloadPDF}
+              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+              title="Download as PDF">
+              <Download className="w-4 h-4" />
+            </button>
             <button onClick={enterFullscreen}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground">
+              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+              title="Fullscreen">
               <Maximize2 className="w-4 h-4" />
             </button>
           </div>
