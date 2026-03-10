@@ -125,30 +125,33 @@ const PitchDeck = () => {
 
   if (showGrid) {
     return (
-      <div className="min-h-screen bg-background p-8">
-        <div className="flex items-center justify-between mb-8 px-4">
-          <h2 className="text-2xl font-display font-bold text-foreground">All Slides</h2>
-          <button onClick={() => setShowGrid(false)}
-            className="px-4 py-2 rounded-lg bg-secondary text-foreground text-sm font-display hover:bg-tixy-card transition-colors">
-            ← Back to Presentation
-          </button>
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4">
-          {slides.map((Slide, i) => (
-            <button key={i} onClick={() => { setCurrent(i); setShowGrid(false); }}
-              className={`group relative rounded-xl overflow-hidden border-2 transition-all hover:scale-[1.02] ${i === current ? "border-tixy-blue glow-tixy" : "border-tixy-card-border hover:border-muted-foreground"}`}>
-              <div className="aspect-video">
-                <ScaledSlide><Slide /></ScaledSlide>
-              </div>
-              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-background/90 to-transparent p-3">
-                <p className="text-xs font-display text-muted-foreground">
-                  <span className="text-tixy-cyan font-bold">{i + 1}</span> · {slideLabels[i]}
-                </p>
-              </div>
+      <>
+        {printContainer}
+        <div className="min-h-screen bg-background p-8">
+          <div className="flex items-center justify-between mb-8 px-4">
+            <h2 className="text-2xl font-display font-bold text-foreground">All Slides</h2>
+            <button onClick={() => setShowGrid(false)}
+              className="px-4 py-2 rounded-lg bg-secondary text-foreground text-sm font-display hover:bg-tixy-card transition-colors">
+              ← Back to Presentation
             </button>
-          ))}
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4">
+            {slides.map((Slide, i) => (
+              <button key={i} onClick={() => { setCurrent(i); setShowGrid(false); }}
+                className={`group relative rounded-xl overflow-hidden border-2 transition-all hover:scale-[1.02] ${i === current ? "border-tixy-blue glow-tixy" : "border-tixy-card-border hover:border-muted-foreground"}`}>
+                <div className="aspect-video">
+                  <ScaledSlide><Slide /></ScaledSlide>
+                </div>
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-background/90 to-transparent p-3">
+                  <p className="text-xs font-display text-muted-foreground">
+                    <span className="text-tixy-cyan font-bold">{i + 1}</span> · {slideLabels[i]}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
