@@ -72,12 +72,42 @@ const PitchDeck = () => {
     document.documentElement.requestFullscreen?.();
   };
 
-  const handleDownloadPDF = useCallback(() => {
+  const handleDownloadPDF = useCallback(async () => {
+    setIsGeneratingPDF(true);
     setIsPrintMode(true);
-    setTimeout(() => {
-      window.print();
+
+    // Wait for slides to render
+    await new Promise(r => setTimeout(r, 800));
+
+    try {
+      const container = printRef.current;
+      if (!container) return;
+
+      const slideEls = container.querySelectorAll<HTMLElement>(".print-slide-inner");
+      const pdf = new jsPDF({ orientation: "landscape", unit: "px", format: [1920, 1080] });
+
+      for (let i = 0; i < slideEls.length; i++) {
+        const canvas = await html2canvas(slideEls[i], {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          backgroundColor: null,
+          width: 1920,
+          height: 1080,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        if (i > 0) pdf.addPage([1920, 1080], "landscape");
+        pdf.addImage(imgData, "PNG", 0, 0, 1920, 1080);
+      }
+
+      pdf.save("Tixy-Pitch-Deck.pdf");
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+    } finally {
       setIsPrintMode(false);
-    }, 500);
+      setIsGeneratingPDF(false);
+    }
   }, []);
 
   const CurrentSlide = slides[current];
