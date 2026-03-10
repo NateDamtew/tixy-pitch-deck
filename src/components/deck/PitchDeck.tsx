@@ -32,7 +32,7 @@ const slides = [
 
 const slideLabels = [
   "Cover", "The Problem", "The Platform", "Mission Control",
-  "Bono", "Offline Mode", "ArifPay", "Promoter Engine",
+  "Bono", "Offline Mode", "Payments", "Promoter Engine",
   "Tiers", "Marketing", "Why Tixy", "Get Started",
 ];
 
