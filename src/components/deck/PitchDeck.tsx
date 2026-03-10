@@ -173,10 +173,10 @@ const PitchDeck = () => {
               title="Grid view (G)">
               <Grid3X3 className="w-4 h-4" />
             </button>
-            <button onClick={handleDownloadPDF}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+            <button onClick={handleDownloadPDF} disabled={isGeneratingPDF}
+              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground disabled:opacity-50"
               title="Download as PDF">
-              <Download className="w-4 h-4" />
+              {isGeneratingPDF ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
             </button>
             <button onClick={enterFullscreen}
               className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
