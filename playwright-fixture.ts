@@ -1,1 +1,2 @@
-export { test, expect } from "@playwright/test";
+// @ts-nocheck
+export { test, expect } from "lovable-agent-playwright-config/fixture";

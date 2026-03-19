@@ -1,8 +1,5 @@
-import { defineConfig } from "@playwright/test";
+import { createLovableConfig } from "lovable-agent-playwright-config/config";
 
-export default defineConfig({
+export default createLovableConfig({
   testDir: "./tests",
-  use: {
-    baseURL: "http://localhost:8080",
-  },
 });
