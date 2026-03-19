@@ -1,8 +1,6 @@
-import { useState, useCallback, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Maximize2, Grid3X3, Download, Loader2 } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Maximize2, Grid3X3 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
 import ScaledSlide from "./ScaledSlide";
 import Slide01Cover from "./slides/Slide01Cover";
 import Slide02Problem from "./slides/Slide02Problem";
@@ -16,35 +14,45 @@ import Slide09Marketing from "./slides/Slide09Marketing";
 import Slide10CTA from "./slides/Slide10CTA";
 import Slide11Bono from "./slides/Slide11Bono";
 import Slide12WhyTixy from "./slides/Slide12WhyTixy";
+import Slide13WhyTixyPricing from "./slides/Slide13WhyTixyPricing";
+import Slide14PlatformFeatures from "./slides/Slide14PlatformFeatures";
+import Slide15Starter from "./slides/Slide15Starter";
+import Slide16Professional from "./slides/Slide16Professional";
+import Slide17Enterprise from "./slides/Slide17Enterprise";
+import Slide18Comparison from "./slides/Slide18Comparison";
 
 const slides = [
-  Slide01Cover,        // 1. Hook
-  Slide02Problem,      // 2. Pain points
-  Slide03Commission,   // 3. The Solution — Platform overview
-  Slide07Dashboard,    // 4. Show the product — visual proof
-  Slide11Bono,         // 5. Cashless wow factor
-  Slide04Offline,      // 6. Reliability
-  Slide05ArifPay,      // 7. Local payments
-  Slide06Promoter,     // 8. Growth engine
-  Slide08Tiers,        // 9. Scalable partnerships
-  Slide09Marketing,    // 10. Bonus value — help them sell
-  Slide12WhyTixy,      // 11. Summary — why Tixy
-  Slide10CTA,          // 12. Call to action
+  Slide01Cover,           // 1. Hook
+  Slide02Problem,         // 2. Pain points
+  Slide03Commission,      // 3. The Solution — Platform overview
+  Slide07Dashboard,       // 4. Show the product — visual proof
+  Slide11Bono,            // 5. Cashless wow factor
+  Slide04Offline,         // 6. Reliability
+  Slide05ArifPay,         // 7. Local payments
+  Slide06Promoter,        // 8. Growth engine
+  Slide09Marketing,       // 9. Bonus value — help them sell
+  Slide13WhyTixyPricing,  // 10. Transition to pricing — why Tixy
+  Slide14PlatformFeatures,// 11. Core platform features
+  Slide15Starter,         // 12. Starter package
+  Slide16Professional,    // 13. Professional package
+  Slide17Enterprise,      // 14. Enterprise package
+  Slide18Comparison,      // 15. Package comparison table
+  Slide12WhyTixy,         // 16. Summary — why organizers choose Tixy
+  Slide10CTA,             // 17. Call to action
 ];
 
 const slideLabels = [
   "Cover", "The Problem", "The Platform", "Mission Control",
   "Bono", "Offline Mode", "Payments", "Promoter Engine",
-  "Tiers", "Marketing", "Why Tixy", "Get Started",
+  "Marketing", "Why Tixy", "Platform Features",
+  "Starter", "Professional", "Enterprise", "Comparison",
+  "Why Choose Tixy", "Get Started",
 ];
 
 const PitchDeck = () => {
   const [current, setCurrent] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showGrid, setShowGrid] = useState(false);
-  const [isPrintMode, setIsPrintMode] = useState(false);
-  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const printRef = useRef<HTMLDivElement>(null);
 
   const next = useCallback(() => setCurrent(c => Math.min(c + 1, slides.length - 1)), []);
   const prev = useCallback(() => setCurrent(c => Math.max(c - 1, 0)), []);
@@ -72,61 +80,13 @@ const PitchDeck = () => {
     document.documentElement.requestFullscreen?.();
   };
 
-  const handleDownloadPDF = useCallback(async () => {
-    setIsGeneratingPDF(true);
-    setIsPrintMode(true);
-
-    // Wait for slides to render
-    await new Promise(r => setTimeout(r, 800));
-
-    try {
-      const container = printRef.current;
-      if (!container) return;
-
-      const slideEls = container.querySelectorAll<HTMLElement>(".print-slide-inner");
-      const pdf = new jsPDF({ orientation: "landscape", unit: "px", format: [1920, 1080] });
-
-      for (let i = 0; i < slideEls.length; i++) {
-        const canvas = await html2canvas(slideEls[i], {
-          scale: 2,
-          useCORS: true,
-          logging: false,
-          backgroundColor: null,
-          width: 1920,
-          height: 1080,
-        });
-
-        const imgData = canvas.toDataURL("image/png");
-        if (i > 0) pdf.addPage([1920, 1080], "landscape");
-        pdf.addImage(imgData, "PNG", 0, 0, 1920, 1080);
-      }
-
-      pdf.save("Tixy-Pitch-Deck.pdf");
-    } catch (err) {
-      console.error("PDF generation failed:", err);
-    } finally {
-      setIsPrintMode(false);
-      setIsGeneratingPDF(false);
-    }
-  }, []);
 
   const CurrentSlide = slides[current];
 
-  // Offscreen print container rendered alongside normal UI
-  const printContainer = isPrintMode ? (
-    <div ref={printRef} style={{ position: "absolute", left: "-9999px", top: 0, zIndex: -1 }}>
-      {slides.map((Slide, i) => (
-        <div key={i} className="print-slide-inner" style={{ width: 1920, height: 1080, position: "relative", overflow: "hidden", background: "hsl(220 20% 7%)" }}>
-          <Slide />
-        </div>
-      ))}
-    </div>
-  ) : null;
 
   if (showGrid) {
     return (
       <>
-        {printContainer}
         <div className="min-h-screen bg-background p-8">
           <div className="flex items-center justify-between mb-8 px-4">
             <h2 className="text-2xl font-display font-bold text-foreground">All Slides</h2>
@@ -157,75 +117,70 @@ const PitchDeck = () => {
 
   return (
     <>
-      {printContainer}
       <div className="h-screen flex flex-col bg-background overflow-hidden">
-      {/* Toolbar */}
-      {!isFullscreen && (
-        <div className="h-14 border-b border-border flex items-center justify-between px-6 shrink-0">
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-display font-bold text-gradient-tixy">Tixy Pitch Deck</span>
-            <span className="text-xs text-muted-foreground">·</span>
-            <span className="text-xs text-muted-foreground font-display">{slideLabels[current]}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button onClick={() => setShowGrid(true)}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
-              title="Grid view (G)">
-              <Grid3X3 className="w-4 h-4" />
-            </button>
-            <button onClick={handleDownloadPDF} disabled={isGeneratingPDF}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground disabled:opacity-50"
-              title="Download as PDF">
-              {isGeneratingPDF ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-            </button>
-            <button onClick={enterFullscreen}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
-              title="Fullscreen">
-              <Maximize2 className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
+        {/* Toolbar */}
+        {!isFullscreen && (
+          <div className="h-14 border-b border-border flex items-center justify-between px-6 shrink-0">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-display font-bold text-gradient-tixy">Tixy Pitch Deck</span>
+              <span className="text-xs text-muted-foreground">·</span>
+              <span className="text-xs text-muted-foreground font-display">{slideLabels[current]}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button onClick={() => setShowGrid(true)}
+                className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+                title="Grid view (G)">
+                <Grid3X3 className="w-4 h-4" />
+              </button>
 
-      {/* Slide area */}
-      <div className="flex-1 relative" onClick={(e) => {
-        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        if (x > rect.width / 2) next(); else prev();
-      }}>
-        <AnimatePresence mode="wait">
-          <motion.div key={current} className="absolute inset-0"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}>
-            <ScaledSlide className="w-full h-full">
-              <CurrentSlide />
-            </ScaledSlide>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Bottom nav */}
-      {!isFullscreen && (
-        <div className="h-16 border-t border-border flex items-center justify-center gap-6 shrink-0">
-          <button onClick={prev} disabled={current === 0}
-            className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground disabled:opacity-30">
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <div className="flex items-center gap-2">
-            {slides.map((_, i) => (
-              <button key={i} onClick={() => setCurrent(i)}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${i === current ? "bg-tixy-blue w-6" : "bg-secondary hover:bg-muted-foreground"}`} />
-            ))}
+              <button onClick={enterFullscreen}
+                className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+                title="Fullscreen">
+                <Maximize2 className="w-4 h-4" />
+              </button>
+            </div>
           </div>
-          <span className="text-xs text-muted-foreground font-display min-w-[60px] text-center">
-            {current + 1} / {slides.length}
-          </span>
-          <button onClick={next} disabled={current === slides.length - 1}
-            className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground disabled:opacity-30">
-            <ChevronRight className="w-5 h-5" />
-          </button>
+        )}
+
+        {/* Slide area */}
+        <div className="flex-1 relative" onClick={(e) => {
+          const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          if (x > rect.width / 2) next(); else prev();
+        }}>
+          <AnimatePresence mode="wait">
+            <motion.div key={current} className="absolute inset-0"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}>
+              <ScaledSlide className="w-full h-full">
+                <CurrentSlide />
+              </ScaledSlide>
+            </motion.div>
+          </AnimatePresence>
         </div>
-      )}
+
+        {/* Bottom nav */}
+        {!isFullscreen && (
+          <div className="h-16 border-t border-border flex items-center justify-center gap-6 shrink-0">
+            <button onClick={prev} disabled={current === 0}
+              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground disabled:opacity-30">
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <div className="flex items-center gap-2">
+              {slides.map((_, i) => (
+                <button key={i} onClick={() => setCurrent(i)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all ${i === current ? "bg-tixy-blue w-6" : "bg-secondary hover:bg-muted-foreground"}`} />
+              ))}
+            </div>
+            <span className="text-xs text-muted-foreground font-display min-w-[60px] text-center">
+              {current + 1} / {slides.length}
+            </span>
+            <button onClick={next} disabled={current === slides.length - 1}
+              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground disabled:opacity-30">
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

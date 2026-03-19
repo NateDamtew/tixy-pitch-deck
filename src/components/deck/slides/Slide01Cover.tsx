@@ -6,7 +6,7 @@ const Slide01Cover = () => (
   <SlideLayout>
     {/* Large glow orb */}
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-gradient-tixy opacity-[0.07] blur-[120px]" />
-    
+
     <div className="flex flex-col items-center justify-center h-full gap-12 px-40">
       <motion.img
         src={tixyLogo}
@@ -40,7 +40,7 @@ const Slide01Cover = () => (
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
       >
-        The Organizer's Command Center
+        Sell More. Stress Less. Own Everything.
       </motion.div>
     </div>
   </SlideLayout>

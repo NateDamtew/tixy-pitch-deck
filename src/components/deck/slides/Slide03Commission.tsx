@@ -58,12 +58,7 @@ const Slide03Commission = () => (
         ))}
       </div>
 
-      <motion.div className="mt-10 text-center"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>
-        <span className="text-[22px] text-muted-foreground">And with just </span>
-        <span className="text-gradient-tixy font-bold text-[28px]">5% commission</span>
-        <span className="text-[22px] text-muted-foreground">, you keep more of what you earn.</span>
-      </motion.div>
+
     </div>
   </SlideLayout>
 );
