@@ -6,7 +6,7 @@ const painPoints = [
   { icon: AlertTriangle, title: "No Branded Experience", desc: "Generic ticketing pages that dilute your brand. No control over the customer journey." },
   { icon: Wifi, title: "Internet Failures at the Door", desc: "One dropped signal = chaos at check-in. Lost revenue, angry fans." },
   { icon: ClipboardList, title: "Fragmented Tools", desc: "Juggling spreadsheets, separate payment apps, and manual promoter tracking across multiple platforms." },
-  { icon: Clock, title: "High Commissions & Delayed Payouts", desc: "15–20% commissions eating your profits, then waiting days to access your own money." },
+  { icon: Clock, title: "High Commissions & Delayed Payouts", desc: "High commission rates eating your profits, then waiting days to access your own money." },
 ];
 
 const Slide02Problem = () => (

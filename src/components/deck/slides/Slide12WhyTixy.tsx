@@ -6,10 +6,11 @@ const reasons = [
   { title: "Fully Branded Experience", desc: "Your event, your brand — not a generic ticketing page." },
   { title: "Offline-Ready Check-ins", desc: "Never miss a scan, even when the internet drops." },
   { title: "Cashless Payments with Bono", desc: "Faster vendor transactions, zero cash handling, full visibility." },
-  { title: "Local Payment Integration", desc: "ArifPay built in — no foreign currency hurdles for your fans." },
+  { title: "Local & International Payments", desc: "Built-in payment processing with flexibility to integrate your preferred gateway based on your needs." },
   { title: "Promoter Tracking Engine", desc: "Turn word-of-mouth into measurable, data-backed sales." },
   { title: "Complete Data Ownership", desc: "You own your attendee list, sales data, and event insights." },
-  { title: "Only 5% Commission", desc: "Keep more of your revenue compared to 15–20% industry standard." },
+  { title: "Tier-Based Commission", desc: "Fair, performance-based pricing — we only earn when you do. No upfront costs, no monthly fees." },
+  { title: "Usher & Technical Support", desc: "On-ground ushers to assist with check-ins plus full technical support before, during, and after your event." },
 ];
 
 const Slide12WhyTixy = () => (
